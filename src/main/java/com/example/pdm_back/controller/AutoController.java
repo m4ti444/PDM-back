@@ -44,6 +44,7 @@ public class AutoController {
 
     @PostMapping
     public ResponseEntity<Auto> createAuto(@RequestBody Auto auto) {
+        auto.setId(null);
         Auto createdAuto = autoService.save(auto);
         return ResponseEntity.status(201).body(createdAuto);
     }

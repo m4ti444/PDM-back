@@ -43,6 +43,7 @@ public class RegionController {
 
     @PostMapping
     public ResponseEntity<Region> createRegion(@RequestBody Region region) {
+        region.setId(null);
         Region createdRegion = regionService.save(region);
         return ResponseEntity.status(201).body(createdRegion);
     }

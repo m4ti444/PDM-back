@@ -14,62 +14,63 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.pdm_back.model.MetodoEnvio;
-import com.example.pdm_back.service.MetodoEnvioService;
+import com.example.pdm_back.model.MetodoPago;
+import com.example.pdm_back.service.MetodoPagoService;
 
 @RestController
 @RequestMapping("/api/metodos-pago")
 public class MetodoPagoController {
     @Autowired
-    private MetodoEnvioService metodoEnvioService;
+    private MetodoPagoService metodoPagoService;
 
     @GetMapping
-    public ResponseEntity<List<MetodoEnvio>> getAllMetodoEnvios() {
-        List<MetodoEnvio> metodoEnvios = metodoEnvioService.findAll();
-        if (metodoEnvios.isEmpty()) {
+    public ResponseEntity<List<MetodoPago>> getAllMetodosPago() {
+        List<MetodoPago> metodosPago = metodoPagoService.findAll();
+        if (metodosPago.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
-        return ResponseEntity.ok(metodoEnvios);
+        return ResponseEntity.ok(metodosPago);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MetodoEnvio> getMetodoEnvioById(@PathVariable Integer id) {
-        MetodoEnvio metodoEnvio = metodoEnvioService.findById(id);
-        if (metodoEnvio == null) {
+    public ResponseEntity<MetodoPago> getMetodoPagoById(@PathVariable Integer id) {
+        MetodoPago metodoPago = metodoPagoService.findById(id);
+        if (metodoPago == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(metodoEnvio);
+        return ResponseEntity.ok(metodoPago);
     }
 
     @PostMapping
-    public ResponseEntity<MetodoEnvio> createMetodoEnvio(@RequestBody MetodoEnvio metodoEnvio) {
-        MetodoEnvio createdMetodoEnvio = metodoEnvioService.save(metodoEnvio);
-        return ResponseEntity.status(201).body(createdMetodoEnvio);
+    public ResponseEntity<MetodoPago> createMetodoPago(@RequestBody MetodoPago metodoPago) {
+        metodoPago.setId(null);
+        MetodoPago createdMetodoPago = metodoPagoService.save(metodoPago);
+        return ResponseEntity.status(201).body(createdMetodoPago);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<MetodoEnvio> updateMetodoEnvio(@PathVariable Integer id, @RequestBody MetodoEnvio metodoEnvio) {
-        metodoEnvio.setId(id);
-        MetodoEnvio updatedMetodoEnvio = metodoEnvioService.save(metodoEnvio);
-        if (updatedMetodoEnvio == null) {
+    public ResponseEntity<MetodoPago> updateMetodoPago(@PathVariable Integer id, @RequestBody MetodoPago metodoPago) {
+        metodoPago.setId(id);
+        MetodoPago updatedMetodoPago = metodoPagoService.save(metodoPago);
+        if (updatedMetodoPago == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(updatedMetodoEnvio);
+        return ResponseEntity.ok(updatedMetodoPago);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<MetodoEnvio> updatePartialMetodoEnvio(@PathVariable Integer id, @RequestBody MetodoEnvio metodoEnvio) {
-        metodoEnvio.setId(id);
-        MetodoEnvio updatedMetodoEnvio = metodoEnvioService.partialUpdate(metodoEnvio);
-        if (updatedMetodoEnvio == null) {
+    public ResponseEntity<MetodoPago> updatePartialMetodoPago(@PathVariable Integer id, @RequestBody MetodoPago metodoPago) {
+        metodoPago.setId(id);
+        MetodoPago updatedMetodoPago = metodoPagoService.partialUpdate(metodoPago);
+        if (updatedMetodoPago == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(updatedMetodoEnvio);
+        return ResponseEntity.ok(updatedMetodoPago);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteMetodoEnvio(@PathVariable Integer id) {
-        metodoEnvioService.deleteById(id);
+    public ResponseEntity<Void> deleteMetodoPago(@PathVariable Integer id) {
+        metodoPagoService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 }

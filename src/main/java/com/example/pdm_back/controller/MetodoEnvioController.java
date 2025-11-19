@@ -43,6 +43,7 @@ public class MetodoEnvioController {
 
     @PostMapping
     public ResponseEntity<MetodoEnvio> createMetodoEnvio(@RequestBody MetodoEnvio metodoEnvio) {
+        metodoEnvio.setId(null);
         MetodoEnvio createdMetodoEnvio = metodoEnvioService.save(metodoEnvio);
         return ResponseEntity.status(201).body(createdMetodoEnvio);
     }

@@ -43,6 +43,7 @@ public class ComunaController {
 
     @PostMapping
     public ResponseEntity<Comuna> createComuna(@RequestBody Comuna comuna) {
+        comuna.setId(null);
         Comuna createdComuna = comunaService.save(comuna);
         return ResponseEntity.status(201).body(createdComuna);
     }

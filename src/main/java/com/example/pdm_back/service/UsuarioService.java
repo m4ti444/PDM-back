@@ -49,8 +49,22 @@ public class UsuarioService {
     }
 
     public Usuario save(Usuario usuario) {
-        String passwordHasheada = passwordEncoder.encode(usuario.getContrasena());
-        usuario.setContrasena(passwordHasheada);
+        if (usuario.getId() != null) {
+            Usuario existing = usuarioRepository.findById(usuario.getId()).orElse(null);
+            if (existing == null) {
+                return null;
+            }
+            if (usuario.getContrasena() != null) {
+                usuario.setContrasena(passwordEncoder.encode(usuario.getContrasena()));
+            } else {
+                usuario.setContrasena(existing.getContrasena());
+            }
+        } else {
+            if (usuario.getContrasena() == null) {
+                return null;
+            }
+            usuario.setContrasena(passwordEncoder.encode(usuario.getContrasena()));
+        }
         return usuarioRepository.save(usuario);
     }
 

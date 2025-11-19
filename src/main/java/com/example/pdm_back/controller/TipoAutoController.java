@@ -43,6 +43,7 @@ public class TipoAutoController {
 
     @PostMapping
     public ResponseEntity<TipoAuto> createTipoAuto(@RequestBody TipoAuto tipoAuto) {
+        tipoAuto.setId(null);
         TipoAuto createdTipoAuto = tipoAutoService.save(tipoAuto);
         return ResponseEntity.status(201).body(createdTipoAuto);
     }

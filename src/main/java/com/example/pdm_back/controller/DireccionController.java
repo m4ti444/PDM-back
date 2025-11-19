@@ -44,6 +44,7 @@ public class DireccionController {
 
     @PostMapping
     public ResponseEntity<Direccion> createDireccion(@RequestBody Direccion direccion) {
+        direccion.setId(null);
         Direccion createdDireccion = direccionService.save(direccion);
         return ResponseEntity.status(201).body(createdDireccion);
     }

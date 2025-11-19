@@ -43,6 +43,7 @@ public class EstadoVentaController {
 
     @PostMapping
     public ResponseEntity<EstadoVenta> createEstadoVenta(@RequestBody EstadoVenta estadoVenta) {
+        estadoVenta.setId(null);
         EstadoVenta createdEstadoVenta = estadoVentaService.save(estadoVenta);
         return ResponseEntity.status(201).body(createdEstadoVenta);
     }
