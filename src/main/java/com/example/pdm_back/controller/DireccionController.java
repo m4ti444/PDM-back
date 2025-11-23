@@ -15,7 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.pdm_back.model.Direccion;
+import com.example.pdm_back.model.Usuario;
+import com.example.pdm_back.model.Comuna;
 import com.example.pdm_back.service.DireccionService;
+import com.example.pdm_back.service.UsuarioService;
+import com.example.pdm_back.service.ComunaService;
 
 
 @RestController
@@ -23,6 +27,12 @@ import com.example.pdm_back.service.DireccionService;
 public class DireccionController {
     @Autowired
     private DireccionService direccionService;
+
+    @Autowired
+    private UsuarioService usuarioService;
+
+    @Autowired
+    private ComunaService comunaService;
 
     @GetMapping
     public ResponseEntity<List<Direccion>> getAllDirecciones() {
@@ -44,7 +54,20 @@ public class DireccionController {
 
     @PostMapping
     public ResponseEntity<Direccion> createDireccion(@RequestBody Direccion direccion) {
+        if (direccion.getUsuario() == null || direccion.getUsuario().getId() == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        if (direccion.getComuna() == null || direccion.getComuna().getId() == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        Usuario usuario = usuarioService.findById(direccion.getUsuario().getId());
+        Comuna comuna = comunaService.findById(direccion.getComuna().getId());
+        if (usuario == null || comuna == null) {
+            return ResponseEntity.badRequest().build();
+        }
         direccion.setId(null);
+        direccion.setUsuario(usuario);
+        direccion.setComuna(comuna);
         Direccion createdDireccion = direccionService.save(direccion);
         return ResponseEntity.status(201).body(createdDireccion);
     }

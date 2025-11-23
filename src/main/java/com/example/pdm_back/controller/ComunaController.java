@@ -15,13 +15,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.pdm_back.model.Comuna;
+import com.example.pdm_back.model.Region;
 import com.example.pdm_back.service.ComunaService;
+import com.example.pdm_back.service.RegionService;
 
 @RestController
 @RequestMapping("/api/comunas")
 public class ComunaController {
     @Autowired
     private ComunaService comunaService;
+
+    @Autowired
+    private RegionService regionService;
 
     @GetMapping
     public ResponseEntity<List<Comuna>> getAllComunas() {
@@ -43,7 +48,15 @@ public class ComunaController {
 
     @PostMapping
     public ResponseEntity<Comuna> createComuna(@RequestBody Comuna comuna) {
+        if (comuna.getRegion() == null || comuna.getRegion().getId() == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        Region region = regionService.findById(comuna.getRegion().getId());
+        if (region == null) {
+            return ResponseEntity.badRequest().build();
+        }
         comuna.setId(null);
+        comuna.setRegion(region);
         Comuna createdComuna = comunaService.save(comuna);
         return ResponseEntity.status(201).body(createdComuna);
     }

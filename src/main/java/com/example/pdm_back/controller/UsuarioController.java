@@ -16,13 +16,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.pdm_back.model.Usuario;
+import com.example.pdm_back.model.Rol;
 import com.example.pdm_back.service.UsuarioService;
+import com.example.pdm_back.service.RolService;
 
 @RestController
 @RequestMapping("/api/usuarios")
 public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
+
+    @Autowired
+    private RolService rolService;
 
     @GetMapping
     public ResponseEntity<List<Usuario>> getallUsuario() {
@@ -56,8 +61,19 @@ public class UsuarioController {
 
     @PostMapping
     public ResponseEntity<Usuario> createUsuario(@RequestBody Usuario usuario) {
+        if (usuario.getRol() != null && usuario.getRol().getId() != null) {
+            Rol rol = rolService.findById(usuario.getRol().getId());
+            if (rol == null) {
+                return ResponseEntity.badRequest().build();
+            }
+            usuario.setRol(rol);
+        }
         usuario.setId(null);
         Usuario usuarioNew = usuarioService.save(usuario);
+        if (usuarioNew == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        usuarioNew.setContrasena(null);
         return ResponseEntity.status(201).body(usuarioNew);
     }
 

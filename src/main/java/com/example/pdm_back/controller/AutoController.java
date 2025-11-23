@@ -7,7 +7,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.pdm_back.model.Auto;
+import com.example.pdm_back.model.TipoAuto;
+import com.example.pdm_back.model.Venta;
 import com.example.pdm_back.service.AutoService;
+import com.example.pdm_back.service.TipoAutoService;
+import com.example.pdm_back.service.VentaService;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +27,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class AutoController {
     @Autowired
     private AutoService autoService;
+
+    @Autowired
+    private TipoAutoService tipoAutoService;
+
+    @Autowired
+    private VentaService ventaService;
 
     @GetMapping
     public ResponseEntity<List<Auto>> getAllAutos() {
@@ -44,7 +54,20 @@ public class AutoController {
 
     @PostMapping
     public ResponseEntity<Auto> createAuto(@RequestBody Auto auto) {
+        if (auto.getTipoAuto() == null || auto.getTipoAuto().getId() == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        if (auto.getVenta() == null || auto.getVenta().getId() == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        TipoAuto tipoAuto = tipoAutoService.findById(auto.getTipoAuto().getId());
+        Venta venta = ventaService.findById(auto.getVenta().getId());
+        if (tipoAuto == null || venta == null) {
+            return ResponseEntity.badRequest().build();
+        }
         auto.setId(null);
+        auto.setTipoAuto(tipoAuto);
+        auto.setVenta(venta);
         Auto createdAuto = autoService.save(auto);
         return ResponseEntity.status(201).body(createdAuto);
     }

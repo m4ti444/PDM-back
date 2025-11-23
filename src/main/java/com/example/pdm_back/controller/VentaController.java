@@ -15,13 +15,28 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.pdm_back.model.Venta;
+import com.example.pdm_back.model.EstadoVenta;
+import com.example.pdm_back.model.MetodoPago;
+import com.example.pdm_back.model.MetodoEnvio;
 import com.example.pdm_back.service.VentaService;
+import com.example.pdm_back.service.EstadoVentaService;
+import com.example.pdm_back.service.MetodoPagoService;
+import com.example.pdm_back.service.MetodoEnvioService;
 
 @RestController
 @RequestMapping("/api/ventas")
 public class VentaController {
     @Autowired
     private VentaService ventaService;
+
+    @Autowired
+    private EstadoVentaService estadoVentaService;
+
+    @Autowired
+    private MetodoPagoService metodoPagoService;
+
+    @Autowired
+    private MetodoEnvioService metodoEnvioService;
 
     @GetMapping
     public ResponseEntity<List<Venta>> getAllVentas() {
@@ -43,7 +58,25 @@ public class VentaController {
 
     @PostMapping
     public ResponseEntity<Venta> createVenta(@RequestBody Venta venta) {
+        if (venta.getEstadoVenta() == null || venta.getEstadoVenta().getId() == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        if (venta.getMetodoPago() == null || venta.getMetodoPago().getId() == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        if (venta.getMetodoEnvio() == null || venta.getMetodoEnvio().getId() == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        EstadoVenta estadoVenta = estadoVentaService.findById(venta.getEstadoVenta().getId());
+        MetodoPago metodoPago = metodoPagoService.findById(venta.getMetodoPago().getId());
+        MetodoEnvio metodoEnvio = metodoEnvioService.findById(venta.getMetodoEnvio().getId());
+        if (estadoVenta == null || metodoPago == null || metodoEnvio == null) {
+            return ResponseEntity.badRequest().build();
+        }
         venta.setId(null);
+        venta.setEstadoVenta(estadoVenta);
+        venta.setMetodoPago(metodoPago);
+        venta.setMetodoEnvio(metodoEnvio);
         Venta createdVenta = ventaService.save(venta);
         return ResponseEntity.status(201).body(createdVenta);
     }

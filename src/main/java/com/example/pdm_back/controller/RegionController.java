@@ -47,6 +47,7 @@ public class RegionController {
         Region createdRegion = regionService.save(region);
         return ResponseEntity.status(201).body(createdRegion);
     }
+    
 
     @PutMapping("/{id}")
     public ResponseEntity<Region> updateRegion(@PathVariable Integer id, @RequestBody Region region) {
