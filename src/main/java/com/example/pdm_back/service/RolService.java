@@ -29,4 +29,12 @@ public class RolService {
     public Rol save(Rol rol) {
         return rolRepository.save(rol);
     }
+
+    @SuppressWarnings("null")
+    public void deleteById(Integer id) {
+        if (id == null) {
+            throw new IllegalArgumentException("id no puede ser nulo");
+        }
+        rolRepository.deleteById(id);
+    }
 }
