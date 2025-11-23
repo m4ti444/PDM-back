@@ -1,0 +1,47 @@
+package com.example.pdm_back.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.pdm_back.model.MetodoPago;
+import com.example.pdm_back.repository.MetodoPagoRepository;
+
+import jakarta.transaction.Transactional;
+
+@Service
+@Transactional
+@SuppressWarnings("null")
+public class MetodoPagoService {
+    @Autowired
+    private MetodoPagoRepository metodoPagoRepository;
+
+    public List<MetodoPago> findAll() {
+        return metodoPagoRepository.findAll();
+    }
+
+    public MetodoPago findById(Integer id) {
+        MetodoPago metodoPago = metodoPagoRepository.findById(id).orElse(null);
+        return metodoPago;
+    }
+
+    public MetodoPago save(MetodoPago metodoPago) {
+        return metodoPagoRepository.save(metodoPago);
+    }
+
+    public MetodoPago partialUpdate(MetodoPago metodoPago){
+        MetodoPago existingMetodoPago = metodoPagoRepository.findById(metodoPago.getId()).orElse(null);
+        if (existingMetodoPago != null) {
+            if (metodoPago.getMetodoPago() != null) {
+                existingMetodoPago.setMetodoPago(metodoPago.getMetodoPago());
+            }
+            return metodoPagoRepository.save(existingMetodoPago);
+        }
+        return null;
+    }
+
+    public void deleteById(Integer id) {
+        metodoPagoRepository.deleteById(id);
+    }
+}
