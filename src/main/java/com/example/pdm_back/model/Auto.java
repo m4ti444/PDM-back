@@ -40,6 +40,18 @@ public class Auto {
     @Column(name = "urlAuto", nullable = false)
     private String url;
 
+    @Column(name = "precioAuto")
+    private Integer precio;
+
+    @Column(name = "velocidadAuto")
+    private String velocidad;
+
+    @Column(name = "rangoAuto")
+    private String rango;
+
+    @Column(name = "descripcionAuto", length = 500)
+    private String descripcion;
+
     @ManyToOne
     @JoinColumn(name = "tipo_auto_id", nullable = false)
     private TipoAuto tipoAuto;
