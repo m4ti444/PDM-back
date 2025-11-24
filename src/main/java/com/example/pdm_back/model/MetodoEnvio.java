@@ -13,13 +13,13 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "metodoEnvio")
+@Table(name = "metodo_envio")
 @Entity
 public class MetodoEnvio {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "metodoEnvio", length = 30, nullable = false)
+    @Column(name = "metodo_envio", length = 30, nullable = false)
     private String metodoEnvio;
 }

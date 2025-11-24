@@ -18,14 +18,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "tipoAuto")
+@Table(name = "tipo_auto")
 @Entity
 public class TipoAuto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     
-    @Column(name = "tipoAuto", length = 50, nullable = false)
+    @Column(name = "tipo_auto", length = 50, nullable = false)
     private String tipo;
 
     @OneToMany(mappedBy = "tipoAuto")

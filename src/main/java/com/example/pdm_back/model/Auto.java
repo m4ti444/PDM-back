@@ -22,34 +22,34 @@ public class Auto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "modeloAuto", length = 50, nullable = false)
+    @Column(name = "modelo_auto", length = 50, nullable = false)
     private String modelo;
 
-    @Column(name = "marcaAuto", length = 50, nullable = false)
+    @Column(name = "marca_auto", length = 50, nullable = false)
     private String marca;
 
-    @Column(name = "combustibleAuto", length = 50, nullable = false)
+    @Column(name = "combustible_auto", length = 50, nullable = false)
     private String combustible;
 
-    @Column(name = "origenAuto", length = 50, nullable = false)
+    @Column(name = "origen_auto", length = 50, nullable = false)
     private String origen;
 
-    @Column(name = "colorAuto", length = 50, nullable = false)
+    @Column(name = "color_auto", length = 50, nullable = false)
     private String color;
 
-    @Column(name = "urlAuto", nullable = false)
+    @Column(name = "url_auto", nullable = false)
     private String url;
 
-    @Column(name = "precioAuto")
+    @Column(name = "precio_auto")
     private Integer precio;
 
-    @Column(name = "velocidadAuto")
+    @Column(name = "velocidad_auto")
     private String velocidad;
 
-    @Column(name = "rangoAuto")
+    @Column(name = "rango_auto")
     private String rango;
 
-    @Column(name = "descripcionAuto", length = 500)
+    @Column(name = "descripcion_auto", length = 500)
     private String descripcion;
 
     @ManyToOne
