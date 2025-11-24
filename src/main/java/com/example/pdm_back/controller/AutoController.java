@@ -57,17 +57,20 @@ public class AutoController {
         if (auto.getTipoAuto() == null || auto.getTipoAuto().getId() == null) {
             return ResponseEntity.badRequest().build();
         }
-        if (auto.getVenta() == null || auto.getVenta().getId() == null) {
-            return ResponseEntity.badRequest().build();
+        if (auto.getVenta() != null && auto.getVenta().getId() != null) {
+            Venta venta = ventaService.findById(auto.getVenta().getId());
+            if (venta == null) {
+                return ResponseEntity.badRequest().build();
+            }
+            auto.setVenta(venta);
         }
+        
         TipoAuto tipoAuto = tipoAutoService.findById(auto.getTipoAuto().getId());
-        Venta venta = ventaService.findById(auto.getVenta().getId());
-        if (tipoAuto == null || venta == null) {
+        if (tipoAuto == null) {
             return ResponseEntity.badRequest().build();
         }
         auto.setId(null);
         auto.setTipoAuto(tipoAuto);
-        auto.setVenta(venta);
         Auto createdAuto = autoService.save(auto);
         return ResponseEntity.status(201).body(createdAuto);
     }
