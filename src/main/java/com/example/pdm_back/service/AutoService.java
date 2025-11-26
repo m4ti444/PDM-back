@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import com.example.pdm_back.model.Auto;
 import com.example.pdm_back.repository.AutoRepository;
+import com.example.pdm_back.model.Venta;
+import com.example.pdm_back.repository.VentaRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -17,6 +19,9 @@ public class AutoService {
 
     @Autowired
     private AutoRepository autoRepository;
+
+    @Autowired
+    private VentaRepository ventaRepository;
 
     public List<Auto> findAll() {
         return autoRepository.findAll();
@@ -60,6 +65,13 @@ public class AutoService {
 
             if (auto.getTipoAuto() != null) {
                 existingAuto.setTipoAuto(auto.getTipoAuto());
+            }
+
+            if (auto.getVenta() != null && auto.getVenta().getId() != null) {
+                Venta venta = ventaRepository.findById(auto.getVenta().getId()).orElse(null);
+                if (venta != null) {
+                    existingAuto.setVenta(venta);
+                }
             }
             return autoRepository.save(existingAuto);
         }

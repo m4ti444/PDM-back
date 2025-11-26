@@ -43,7 +43,6 @@ public class UsuarioController {
         Usuario login = usuarioService.login(usuario);
         
         if (login != null) {
-            login.setContrasena(null);
             return ResponseEntity.ok(login);
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales inválidas");
@@ -67,13 +66,20 @@ public class UsuarioController {
                 return ResponseEntity.badRequest().build();
             }
             usuario.setRol(rol);
+        } else {
+            Rol defaultRol = rolService.findById(3);
+            if (defaultRol != null) {
+                usuario.setRol(defaultRol);
+            }
+        }
+        if (usuario.getContrasena() == null || usuario.getContrasena().isBlank()) {
+            return ResponseEntity.badRequest().build();
         }
         usuario.setId(null);
         Usuario usuarioNew = usuarioService.save(usuario);
         if (usuarioNew == null) {
             return ResponseEntity.badRequest().build();
         }
-        usuarioNew.setContrasena(null);
         return ResponseEntity.status(201).body(usuarioNew);
     }
 

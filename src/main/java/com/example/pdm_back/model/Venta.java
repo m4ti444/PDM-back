@@ -1,9 +1,11 @@
 package com.example.pdm_back.model;
 
 import java.util.List;
+import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -41,4 +43,7 @@ public class Venta {
     @OneToMany(mappedBy = "venta")
     @JsonIgnore
     private List<Auto> autos;
+
+    @Column(name = "fecha_retiro")
+    private LocalDate fechaRetiro;
 }

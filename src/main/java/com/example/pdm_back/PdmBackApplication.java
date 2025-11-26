@@ -9,5 +9,4 @@ public class PdmBackApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(PdmBackApplication.class, args);
 	}
-
 }

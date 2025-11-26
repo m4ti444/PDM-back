@@ -63,6 +63,9 @@ public class AutoController {
                 return ResponseEntity.badRequest().build();
             }
             auto.setVenta(venta);
+        } else {
+            Venta defaultVenta = ventaService.findById(1);
+            auto.setVenta(defaultVenta);
         }
         
         TipoAuto tipoAuto = tipoAutoService.findById(auto.getTipoAuto().getId());
@@ -91,6 +94,7 @@ public class AutoController {
         if (existingAuto == null) {
             return ResponseEntity.notFound().build();  
         }
+        auto.setId(id);
         return ResponseEntity.ok(autoService.partialUpdate(auto));
     }
 

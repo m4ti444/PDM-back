@@ -27,11 +27,7 @@ public class UsuarioService {
     }
 
     public Usuario findById(Integer id) {
-        Usuario usuario = usuarioRepository.findById(id).orElse(null);
-        if (usuario != null) {
-            usuario.setContrasena(null);
-        }
-        return usuario;
+        return usuarioRepository.findById(id).orElse(null);
     }
 
     public Usuario login(Usuario usuario) {
